@@ -1,0 +1,165 @@
+<div class="registrationPage">
+    <mat-card class="registration-card">
+        <mat-card-title>Registration</mat-card-title>
+        <mat-card-content>
+            <form #registrationForm="ngForm" (ngSubmit)="doRegistration(registrationForm)">
+                <mat-form-field appearance="outline" class="fields">
+                    <mat-label>username</mat-label>
+                    <input matInput type="text" name="username" ngModel required>
+                </mat-form-field>
+
+
+                <mat-form-field appearance="outline" class="fields">
+                    <mat-label>password</mat-label>
+                    <input matInput [type]="hidePassword ? 'password' : 'text'" placeholder="Enter password"
+                        name="password" ngModel required />
+                    <button mat-icon-button matSuffix type="button" (click)="hidePassword = !hidePassword"
+                        aria-label="Toggle password visibility">
+                        <mat-icon>
+                            {{ hidePassword ? 'visibility_off' : 'visibility' }}
+                        </mat-icon>
+                    </button>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="fields">
+                    <mat-label>email</mat-label>
+                    <input name="email" matInput type="email" placeholder="test@gmail.com"
+                        pattern="[a-zA-Z0-9._+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}" #email="ngModel" ngModel required>
+
+                    <!-- invalid email error -->
+                    <mat-error *ngIf="email.invalid && email.touched">
+                        Invalid email address
+                    </mat-error>
+                </mat-form-field>
+
+
+
+
+
+
+                <div class="fields">
+                    <label class="gender-label">Gender :</label>
+
+                    <div class="redioButtons">
+                        <mat-radio-group name="gender" ngModel required #gender="ngModel">
+                            <mat-radio-button value="MALE">Male</mat-radio-button>
+                            <mat-radio-button value="FEMALE">Female</mat-radio-button>
+                            <mat-radio-button value="OTHER">Other</mat-radio-button>
+                        </mat-radio-group>
+                        <mat-error *ngIf="gender.invalid && registrationForm.submitted">
+                            Please select gender
+                        </mat-error>
+                    </div>
+                </div>
+
+
+
+                <mat-form-field appearance="outline" class="fields" style="margin-top:10px ;">
+                    <mat-label>Date Of Birth</mat-label>
+                    <input matInput [matDatepicker]="picker" name="dob" placeholder="MM/DD/YYYY" ngModel required>
+                   <mat-hint>MM/DD/YYYY</mat-hint>
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+
+
+
+
+                <div class="fields">
+                    <label class="language-label">Language :</label>
+
+                    <div class="language-group">
+                        <mat-checkbox [checked]="selectedLanguages.includes('ENGLISH')"
+                            (change)="onLangChange($event, 'ENGLISH')">English
+                        </mat-checkbox>
+                        <mat-checkbox [checked]="selectedLanguages.includes('HINDI')"
+                            (change)="onLangChange($event, 'HINDI')">Hindi
+                        </mat-checkbox>
+                        <mat-checkbox [checked]="selectedLanguages.includes('MARATHI')"
+                            (change)="onLangChange($event, 'MARATHI')">Marathi</mat-checkbox>
+                    </div>
+                    <div>
+                        <mat-error *ngIf="selectedLanguages.length===0 && registrationForm.submitted">
+                            Please select at list one language
+                        </mat-error>
+
+                    </div>
+                </div>
+
+
+
+
+
+                <div class="fields mobile-country">
+                    <mat-form-field appearance="outline" class="fields">
+                        <mat-label>mobileNo</mat-label>
+                        <input name="mobileNo" matInput type="tel" placeholder="Enter your phone number"
+                            pattern="^[0-9]{10}$" #phone="ngModel" ngModel required>
+
+                        <!-- Show error if phone is invalid -->
+                        <mat-error *ngIf="phone.invalid && phone.touched">
+                            Phone number must be exactly 10 digits.
+                        </mat-error>
+                    </mat-form-field>
+
+
+                    <mat-form-field appearance="outline" class="fields">
+                        <mat-label>country</mat-label>
+                        <mat-select [(value)]="selectCountryName" name="countryName"
+                            (selectionChange)="getStateByCountry($event.value)" ngModel required>
+                            <mat-option *ngFor="let country of countryDto" [value]="country.countryName">
+                                {{country.countryName}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+
+                <!--------------------    All States  ------------------- -->
+                <!-- <mat-form-field appearance="outline" class="fields">
+                    <mat-label>state</mat-label>
+                    <mat-select [(value)]="selectStateName" name="stateName">
+                        <mat-option *ngFor="let state of stateDto" [value]="state.stateName">
+                            {{state.stateName}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field> -->
+
+
+                <div class="fields state-city">
+                    <mat-form-field appearance="outline" class="fields">
+                        <mat-label>state</mat-label>
+                        <mat-select [(value)]="selectStateName" name="stateName"
+                            (selectionChange)="getCities($event.value)" ngModel required>
+                            <mat-option *ngFor="let state of stateDto" [value]="state.stateName">
+                                {{state.stateName}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+
+                    <mat-form-field appearance="outline" class="fields">
+                        <mat-label>city</mat-label>
+                        <mat-select [(value)]="selectCityName" name="cityName" ngModel required>
+                            <mat-option *ngFor="let city of cityDto" [value]="city.cityName">
+                                {{city.cityName}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+
+
+
+                <div class="registerBackButtons">
+                    <button type="button" class="backButton" (click)="backButton()">Back</button>
+                    <button type="submit" class="registerButton">Register</button>
+                </div>
+
+            </form>
+
+        </mat-card-content>
+
+    </mat-card>
+
+</div>

@@ -1,0 +1,148 @@
+<div class="updatePage">
+    <mat-card class="update-card" [class.hidden]="showUpdateForm">
+        <mat-card-title>Verify User</mat-card-title>
+        <mat-card-content>
+
+
+
+            <div *ngIf="!showUpdateForm">
+                <form>
+                    <mat-form-field appearance="outline" class="fields">
+                        <mat-label>username</mat-label>
+                        <input matInput type="text" name="username" [(ngModel)]="username" required>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="fields">
+                        <mat-label>password</mat-label>
+                        <input matInput [type]="hidePassword ? 'password' : 'text'" placeholder="Enter password"
+                            name="password" [(ngModel)]="password" required />
+                        <button mat-icon-button matSuffix type="button" (click)="hidePassword = !hidePassword"
+                            aria-label="Toggle password visibility">
+                            <mat-icon>
+                                {{ hidePassword ? 'visibility_off' : 'visibility' }}
+                            </mat-icon>
+                        </button>
+                    </mat-form-field>
+
+                    <div class="backContinuousButtons">
+                        <button type="button" class="backButton" (click)="backButton()">Back</button>
+                        <button type="button" class="continuousButton"
+                            (click)="checkValidationForUpdate()">Continuous</button>
+                    </div>
+                </form>
+            </div>
+        </mat-card-content>
+    </mat-card>
+
+
+    <mat-card class="update2-card" [class.hidden]="!showUpdateForm">
+        <mat-card-title>Update</mat-card-title>
+        <mat-card-content>
+
+            <div *ngIf="showUpdateForm">
+                <form #updateForm="ngForm" (ngSubmit)="updateDetails(updateForm)">
+                    <mat-form-field appearance="outline" class="fields">
+                        <mat-label>username</mat-label>
+                        <input matInput type="text" name="username" [(ngModel)]="username" disabled>
+                    </mat-form-field>
+
+
+                    <mat-form-field appearance="outline" class="fields">
+                        <mat-label>password</mat-label>
+                        <input matInput type="password" name="password" [(ngModel)]="password" disabled>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="fields">
+                        <mat-label>email</mat-label>
+                        <input matInput type="email" name="email" [(ngModel)]="user.email"
+                            pattern="[a-zA-Z0-9._+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}" #email="ngModel" required>
+                        <!-- invalid email error -->
+                        <mat-error *ngIf="email.invalid && email.touched">
+                            Invalid email address
+                        </mat-error>
+                    </mat-form-field>
+
+
+
+
+                    <div class="fields">
+                        <label class="gender-label">Gender :</label>
+
+                        <div class="redioButtons">
+                            <mat-radio-group name="gender" [(ngModel)]="user.gender" required>
+                                <mat-radio-button value="MALE">Male</mat-radio-button>
+                                <mat-radio-button value="FEMALE">Female</mat-radio-button>
+                                <mat-radio-button value="OTHER">Other</mat-radio-button>
+                            </mat-radio-group>
+                        </div>
+                    </div>
+
+
+                    <mat-form-field appearance="outline" class="fields" style="margin-top:10px ;">
+                        <mat-label>Date Of Birth</mat-label>
+                        <input matInput type="date" name="dob" [(ngModel)]="user.dob" required>
+                        <mat-hint>DD/MM/YYYY</mat-hint>
+                    </mat-form-field>
+
+
+
+                    <div class="fields mobile-country">
+                        <mat-form-field appearance="outline" class="fields">
+                            <mat-label>mobileNo</mat-label>
+                            <input name="mobileNo" matInput type="tel" placeholder="Enter your phone number"
+                                pattern="^[0-9]{10}$" #phone="ngModel" [(ngModel)]="user.mobileNo" required>
+
+                            <!-- Show error if phone is invalid -->
+                            <mat-error *ngIf="phone.invalid && phone.touched">
+                                Phone number must be exactly 10 digits.
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="fields">
+                            <mat-label>country</mat-label>
+                            <mat-select [(value)]="selectCountryName" name="countryName"
+                                [(ngModel)]="user.country.countryName"
+                                (selectionChange)="getStateByCountry($event.value)" ngModel required>
+                                <mat-option *ngFor="let country of countryDto" [value]="country.countryName">
+                                    {{country.countryName}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+
+                    <div class="state-city">
+                        <mat-form-field appearance="outline" class="fields">
+                            <mat-label>state</mat-label>
+                            <mat-select [(value)]="selectStateName" name="stateName" [(ngModel)]="user.state.stateName"
+                                (selectionChange)="getCities($event.value)" ngModel required>
+                                <mat-option *ngFor="let state of stateDto" [value]="state.stateName">
+                                    {{state.stateName}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="fields">
+                            <mat-label>city</mat-label>
+                            <mat-select [(value)]="selectCityName" name="cityName" [(ngModel)]="user.city.cityName"
+                                ngModel required>
+                                <mat-option *ngFor="let city of cityDto" [value]="city.cityName">
+                                    {{city.cityName}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+
+
+
+                    <div class="backContinuousButtons">
+                        <button type="button" class="backButton" (click)="backButton()">Back</button>
+                        <button type="submit" class="continuousButton">Update</button>
+                    </div>
+                </form>
+            </div>
+        </mat-card-content>
+    </mat-card>
+
+</div>

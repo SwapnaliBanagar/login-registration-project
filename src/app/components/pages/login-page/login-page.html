@@ -1,0 +1,36 @@
+
+  <div class="loginPage">
+    <mat-card class="login-card">
+      <mat-card-title>Login</mat-card-title>
+      <mat-card-content>
+        <form #loginForm="ngForm" (ngSubmit)="checkValidation(loginForm)">
+
+          <mat-form-field  class="fields">
+            <mat-label>username</mat-label>
+            <input matInput type="text" name="username" ngModel>
+                      </mat-form-field>
+
+          <mat-form-field class="fields">
+            <mat-label>password</mat-label>
+            <input matInput [type]="hidePassword ? 'password' : 'text'" name="password" ngModel />
+
+
+            <button mat-icon-button matSuffix type="button" (click)="hidePassword = !hidePassword"
+              aria-label="Toggle password visibility">
+              <mat-icon>
+                {{ hidePassword ? 'visibility_off' : 'visibility' }}
+              </mat-icon>
+            </button>
+          </mat-form-field>
+          <!-- <button matButton="filled" class="loginButton">Login</button> -->
+          <button type="submit" class="loginButton">Login</button>
+          <p class="message">Don’t have an account? Register now to get started.</p>
+
+          <div class="registerUpdate">
+            <button type="button" class="registerButton" (click)="registrationPage()">Register Here</button>
+            <button type="button" class="updateButton" (click)="updatePage()">Update Details</button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
